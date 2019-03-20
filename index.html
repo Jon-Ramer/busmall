@@ -5,39 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Market survey page</title>
+    <link rel="stylesheet" href="reset.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header> 
-        <h1>BusMall Market Survey</h1>
+        <h1>    BusMall Market Survey</h1>
     </header>
     <main>
-        <section id = "survey-items">
+        <section id = "survey_items">
             <h2>These are the survey items.  Please choose the item you would most likely purchase.</h2>
-            <div id = "item1"> 
-                <img id = "item1_img" src = "img/cthulhu.jpg" alt = "Death by Monster God">
-                <h3 id = "item2_h2">tag here for item1</h3>
-            </div>
-
-            <div id = "item2">
-                <img id = "item2_img" src = "img/dragon.jpg" alt = "Death by Vengeful Dragon">
-                <h3 id = "item2_h2">tag here for item2</h3>
-            </div>
-
-            <div id = "item3">
-                <img id = "item3_img" src = "img/shark.jpg" alt = "Death by Fluffy Land Shark">
-                <h3 id = "item3_h2">tag here for item3</h3>
-            </div>
-            
-            <div id = "wrap-up">
-                <h3> Thank you for your answers!</h3>
-            </div>
+            <ul>
+                <li id = "item1"> 
+                    <img id = "item1_img" src = "img" alt = ".">
+                    <h3 id = "item1_tag">tag here for item1</h3>
+                </li>
+                <li id = "item2">
+                    <img id = "item2_img" src = "img" alt = ".">
+                    <h3 id = "item2_tag">tag here for item2</h3>
+                </li>
+                <li id = "item3">
+                    <img id = "item3_img" src = "img" alt = ".">
+                    <h3 id = "item3_tag">tag here for item3</h3>
+                </li>
+            </ul>
         </section>
-        <aside>
-            <h2>Item info</h2>
-            <p></p>
-        </aside>
+        <section id = "chart-data">
+            <canvas id="chart" width="400" height="200"></canvas>
+        </section>
+        <p></p>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
