@@ -1,55 +1,22 @@
 'use strict';
-/*
-counter for number of clicks
-where are the images stored= variable with path to image
-  ie: var cruisin = './images/cruisin-goat.jpg'
-  Constructor function for goats
-  Refactored to: array of goat objects
-    - [{GOAT}, {GOAT}]
-    - goat object:
-    {image_url: 'cruisin.jpg,
-    clicks: 0,
-    name: 'cruisin around'
-  }
--listen for an event('click')
-  while(votes < 10)
-  randomly select an image (two images)
-    -random number generator- to pick the goat
-    - change the DOM
-  - increment the amount of clicks on the clicked goat
-    - Store the index of the last goat we put on the page
-Stretch: start with random goats
-*/
-
-/*
-var likeCounter = 0;
-var allGoats = [];
-var leftImage = document.getElementById('left_goat_img');
-var rightImage = document.getElementById('right_goat_img');
-var leftGoatThatIsOnThePage;
-var rightGoatThatIsOnThePage;
-
-var GoatImage = function(url, name){
-    this.imageUrl = url;
-    this.name = name;
-    this.clicks = 0;
-    allGoats.push(this);
-}
-*/
-
 var like_counter = 0;
 var market_items = [];
 var item1_image = document.getElementById('item1_img');
 var item2_image = document.getElementById('item2_img');
 var item3_image = document.getElementById('item3_img');
+var item1 = 7;
+var item2 = 9;
+var item3 = 13;
+var clicked_list = [];
 
 // =======================================
 // Constructor
 // =======================================
 
-var Catalog_item = function(image_url, name, item_info) {
+var Catalog_item = function(image_url, name, alt, item_info) {
     this.image_url = image_url;
     this.name = name;
+//    this.alt = alt;
     this.item_info = item_info;
     this.clicks = 0;
     this.times_displayed = 0;
@@ -64,79 +31,105 @@ new Catalog_item('./img/boots.jpg', 'Sandle Wellies');
 new Catalog_item('./img/breakfast.jpg', 'All-in-One Cooker');
 new Catalog_item('./img/bubblegum.jpg', 'Meatball Shaped Bubblegum');
 new Catalog_item('./img/chair.jpg', 'Reverse chair');
-new Catalog_item('./img/sweater-goat.jpg', 'Cthulhu');
-// new Catalog_item('./img/')
+new Catalog_item('./img/cthulhu.jpg', 'Cthulhu');
+new Catalog_item('./img/dog-duck.jpg', 'Half dog - half duck!');
+new Catalog_item('./img/dragon.jpg', 'Dragon meat');
+new Catalog_item('./img/pen.jpg', 'Upencils caps');
+new Catalog_item('./img/pet-sweep.jpg', 'Pet foot sweepers');
+new Catalog_item('./img/scissors.jpg', 'Pizza scissors');
+new Catalog_item('./img/shark.jpg', 'Fluffy Land Shark');
+new Catalog_item('./img/sweep.png', 'Baby Sweeper');
+new Catalog_item('./img/tauntaun.jpg', 'Tauntaun sleeping bag');
+new Catalog_item('./img/unicorn.jpg', 'Canned Unicorn');
+new Catalog_item('./img/usb.gif', 'Tentacle Drive');
+new Catalog_item('./img/water-can.jpg', 'Reverse water can');
+new Catalog_item('./img/wine-glass.jpg', 'Drink-n-sniff glass');
 
 // ===================================
 // Initialize the Page
 // ===================================
 
-var leftGoatDiv = document.getElementById('left_goat');
-var rightGoatDiv = document.getElementById('right_goat');
+var item1_div = document.getElementById('item1');
+var item2_div = document.getElementById('item2');
+var item3_div = document.getElementById('item3');
+var wrap_up_div = document.getElementById('wrap-up');
 
-//    randomly select an image(two images)
-//    - random number generator - to pick the goat
-//    - change the DOM
-//    - Store the index of the last goat we put on the page
-
-function handleClickOnLeftGoat(event){
-  console.log('clicked on left goat');
-  //increment total clicks
-  likeCounter++;
-  // increment left goat's clicks
-  leftGoatThatIsOnThePage.clicks++;
-
-  // pick a new 2 goats,
-  var leftGoatIndex = Math.floor(Math.random() * allGoats.length);
-  var rightGoatIndex =Math.floor( Math.random() * allGoats.length );
-
-  leftGoatThatIsOnThePage = allGoats[leftGoatIndex];
-  rightGoatThatIsOnThePage = allGoats[rightGoatIndex];
-
-  // and put them on the page
-  leftImage.src = leftGoatThatIsOnThePage.imageUrl;
-  rightImage.src = rightGoatThatIsOnThePage.imageUrl;
-
-  // stop after 25 clicks
-  if(like_counter > 25){
-    // stop listening for clicks
-    leftGoatDiv.removeEventListener('click', handleClickOnLeftGoat);
-    rightGoatDiv.removeEventListener('click', handleClickOnRightGoat);
-  }
-}
-
-function handleClickOnRightGoat(event) {
+function handle_click_on_item1(event){
+  console.log('clicked on #1: ' + item1);
+  console.log('clicked on item: ' + market_items[item1].name);
     // increment total clicks
     like_counter++;
-    // increment right goat's clicks
-    rightGoatThatIsOnThePage.clicks++;
+    // increment item1 clicks
+    market_items[item1].clicks++;
+    // pick 3 new items
+    more_items();
+}
 
-//   pick a new 2 goats,
-//   var leftGoatIndex = Math.floor(Math.random() * allGoats.length);
-//   var rightGoatIndex = Math.floor(Math.random() * allGoats.length);
+function handle_click_on_item2(event){
+  console.log('clicked on #2: ' + item2);
+  console.log('clicked on item: ' + market_items[item2].name);
+  // increment total clicks
+  like_counter++;
+  // increment item1 clicks
+  market_items[item2].clicks++;
+  // pick 3 new items
+  more_items();
+}
 
-    var item1_index = Math.floor(Math.random() * allGoats.length);
-    var item2_index = Math.floor(Math.random() * allGoats.length);
-    var item3_index = Math.floor(Math.random() * allGoats.length);
+function handle_click_on_item3(event){
+  console.log('clicked on #3: ' + item3);
+  console.log('clicked on item: ' + market_items[item3].name);
+  // increment total clicks
+  like_counter++;
+  // increment item1 clicks
+  market_items[item3].clicks++;
+  // pick 3 new items
+  more_items();
+}
 
-  leftGoatThatIsOnThePage = allGoats[leftGoatIndex];
-  rightGoatThatIsOnThePage = allGoats[rightGoatIndex];
+function more_items() {
+  var i = 0;
+  while (i = 0) {
+    var new_item = Math.floor(Math.random() * market_items.length);
+    for (var j = 0; j < clicked_list.length; j++) {
+      if (clicked_list[j] === new_item) {
+        new_item = Math.floor(Math.random() * market_items.length);
+        j = clicked_list.length;
+        i = 0;
+      }
+    }
+    clicked_list.push(new_item);
+    i = 1;
+  }
 
-  // and put them on the page
-  leftImage.src = leftGoatThatIsOnThePage.imageUrl;
-  rightImage.src = rightGoatThatIsOnThePage.imageUrl;
+  var new_item1 = Math.floor(Math.random() * market_items.length);
+  var new_item2 = Math.floor(Math.random() * market_items.length);
+  var new_item3 = Math.floor(Math.random() * market_items.length);
+  // put items on page
+  item1 = new_item1;
+  item2 = new_item2;
+  item3 = new_item3;
+  item1_image.src = market_items[item1].image_url;
+  item2_image.src = market_items[item2].image_url;
+  item3_image.src = market_items[item3].image_url;
+  // stop listening for clicks after 25 clicks
+  if (like_counter > 24) {
+    item1_div.removeEventListener('click', handle_click_on_item1);
+    item2_div.removeEventListener('click', handle_click_on_item2);
+    item3_div.removeEventListener('click', handle_click_on_item3);
 
-  // stop after 10 clicks
-  if (likeCounter > 9) {
-    // stop listening for clicks on the left and right goat
-    leftGoatDiv.removeEventListener('click', handleClickOnLeftGoat);
-    rightGoatDiv.removeEventListener('click', handleClickOnRightGoat);
+  // AFTER 25 CLICKS
+
+    console.log("total clicks: " + like_counter);
+    for (var i=0; i < market_items.length; i++) {
+      console.log("item clicks: " + i + " : " + market_items[i].clicks);
+    }
+    item1_image.src = "";
+    item2_image.src = "";
+    item3_image.src = "";
   }
 }
 
-leftGoatDiv.addEventListener('click', handleClickOnLeftGoat);
-rightGoatDiv.addEventListener('click', handleClickOnRightGoat);
-
-// When I first load the page, I need to know which goat is left and right, sso they can track their clicks in the javascript
-leftGoatThatIsOnThePage = allGoats[6];
-rightGoatThatIsOnThePage = allGoats[0];
+item1_div.addEventListener('click', handle_click_on_item1);
+item2_div.addEventListener('click', handle_click_on_item2);
+item3_div.addEventListener('click', handle_click_on_item3);
