@@ -18,9 +18,9 @@ var new_item2 = 0;
 var new_item3 = 0;
 var clicked_list = [];
 
-// =======================================
+// ================================================
 // Constructor
-// =======================================
+// ================================================
 
 var Catalog_item = function(image_url, name, alt, item_info) {
     this.image_url = image_url;
@@ -54,9 +54,9 @@ new Catalog_item('./img/usb.gif', 'Tentacle Drive', 'Collecting your data in mul
 new Catalog_item('./img/water-can.jpg', 'Reverse water can', 'Wash your hands while you garden', 'Yes, the designer of this was stoned.');
 new Catalog_item('./img/wine-glass.jpg', 'Drink-n-sniff glass', 'Best with red wine', 'Slosh and smell you favorite vintages with this exclusive gem.');
 
-// ===================================
+// ================================================
 // functions
-// ===================================
+// ================================================
 
 function handle_click_on_item1(event){
   console.log('clicked on #1: ' + item1);
@@ -86,9 +86,11 @@ function more_items() {
   localStorage.setItem('like_counter_in_ls', like_counter);
   var stringy_object = JSON.stringify(market_items);
   localStorage.setItem('market_items_array_in_ls', stringy_object);
+  localStorage.setItem('clicked_list_in_ls', clicked_list);
   var i = 0;
   var j = 0;
 // bad technique to repeat code 3 times, but I'm too tired to loop it
+// item1 ================================================
   while (i === 0) {
     new_item1 = Math.floor(Math.random() * market_items.length);
   while (j < clicked_list.length) {
@@ -103,6 +105,7 @@ function more_items() {
     item1 = new_item1;
   }
 
+  // item2 ================================================
   i = 0;
   while (i === 0) {
     new_item2 = Math.floor(Math.random() * market_items.length);
@@ -118,7 +121,8 @@ function more_items() {
     item2 = new_item2;
   }
 
-  i = 0;
+// item3 ================================================
+i = 0;
   while (i === 0) {
     new_item3 = Math.floor(Math.random() * market_items.length);
   while (j < clicked_list.length) {
@@ -155,7 +159,7 @@ console.log("item3: " + item3);
     for (var i=0; i < market_items.length; i++) {
       console.log("item clicks: " + i + " : " + market_items[i].clicks);
     }
-    item1_image.src = "";
+    item1_image.src = ""; // create blank image and add it here?
     item2_image.src = "";
     item3_image.src = "";
     item1_image.alt = "";
@@ -203,14 +207,16 @@ function make_chart(){
   });
 }
 
-// ===================================
-// Initialize page & run code
-// ===================================
+// ================================================
+// Initialize page, get data from LS, & run code
+// ================================================
 
-var likes_in_ls = localStorage.getItem('like_counter_in_ls');
+var likes_in_ls = parseInt(localStorage.getItem('like_counter_in_ls'),10);
 var market_items_in_ls = localStorage.getItem(market_items_array_in_ls);
-var market_items = JSON.parse(market_items_in_ls);
-if (likes_in_ls === 0) { 
+market_items = JSON.parse(market_items_in_ls);
+var clicked_list_from_ls = localStorage.getItem(clicked_list_in_ls);
+clicked_list = JSON.parse(clicked_list_from_ls);
+if (likes_in_ls === 0) {
   new_item1 = Math.floor(Math.random() * market_items.length);
   clicked_list.push(new_item1);
   new_item2 = Math.floor(Math.random() * market_items.length);
@@ -219,7 +225,6 @@ if (likes_in_ls === 0) {
   clicked_list.push(new_item3);
 } else {
   like_counter = likes_in_ls;
-  // add get clicklist from ls here
 }
 more_items();
 item1_div.addEventListener('click', handle_click_on_item1);
