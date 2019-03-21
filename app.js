@@ -4,6 +4,12 @@ var market_items = [];
 var item1_image = document.getElementById('item1_img');
 var item2_image = document.getElementById('item2_img');
 var item3_image = document.getElementById('item3_img');
+var item1_div = document.getElementById('item1');
+var item2_div = document.getElementById('item2');
+var item3_div = document.getElementById('item3');
+var item1_tag = document.getElementById('item1_tag');
+var item2_tag = document.getElementById('item2_tag');
+var item3_tag = document.getElementById('item3_tag');
 var item1;
 var item2;
 var item3;
@@ -49,20 +55,8 @@ new Catalog_item('./img/water-can.jpg', 'Reverse water can', 'Wash your hands wh
 new Catalog_item('./img/wine-glass.jpg', 'Drink-n-sniff glass', 'Best with red wine', 'Slosh and smell you favorite vintages with this exclusive gem.');
 
 // ===================================
-// Initialize the Page
+// functions
 // ===================================
-
-var item1_div = document.getElementById('item1');
-var item2_div = document.getElementById('item2');
-var item3_div = document.getElementById('item3');
-var item1_tag = document.getElementById('item1_tag');
-var item2_tag = document.getElementById('item2_tag');
-var item3_tag = document.getElementById('item3_tag');
-
-// handle function does following:
-// increment total clicks
-// increment item clicks
-// calls pick 3 new items function
 
 function handle_click_on_item1(event){
   console.log('clicked on #1: ' + item1);
@@ -89,10 +83,12 @@ function handle_click_on_item3(event){
 }
 
 function more_items() {
+  localStorage.setItem('like_counter_in_ls', like_counter);
+  var stringy_object = JSON.stringify(market_items);
+  localStorage.setItem('market_items_array_in_ls', stringy_object);
   var i = 0;
   var j = 0;
-
-  // bad technique to repeat code 3 times, but I'm too tired to loop it
+// bad technique to repeat code 3 times, but I'm too tired to loop it
   while (i === 0) {
     new_item1 = Math.floor(Math.random() * market_items.length);
   while (j < clicked_list.length) {
@@ -136,13 +132,10 @@ function more_items() {
     i = 1;
     item3 = new_item3;
   }
-
-  // update item image, text, and alt on page
-
+// update item image, text, and alt on page
 console.log("item1: " + item1);
 console.log("item2: " + item2);
 console.log("item3: " + item3);
-
   item1_image.src = market_items[item1].image_url;
   item2_image.src = market_items[item2].image_url;
   item3_image.src = market_items[item3].image_url;
@@ -152,15 +145,12 @@ console.log("item3: " + item3);
   item1_tag.innerHTML = market_items[item1].item_info;
   item2_tag.innerHTML = market_items[item2].item_info;
   item3_tag.innerHTML = market_items[item3].item_info;
-  
   // stop listening for clicks after 25 clicks
   if (like_counter > 24) {
     item1_div.removeEventListener('click', handle_click_on_item1);
     item2_div.removeEventListener('click', handle_click_on_item2);
     item3_div.removeEventListener('click', handle_click_on_item3);
-
   // AFTER 25 CLICKS
-
     console.log("total clicks: " + like_counter);
     for (var i=0; i < market_items.length; i++) {
       console.log("item clicks: " + i + " : " + market_items[i].clicks);
@@ -177,26 +167,21 @@ console.log("item3: " + item3);
     make_chart();
   }
 }
-function make_chart(){
 
+function make_chart(){
   var selects_array = [];
   var survey_likes =[]; 
-
   for(var i = 0; i < market_items.length; i++){
     var item_name = market_items[i].name;
     selects_array.push(item_name);
   }
-
   for(var i = 0; i < market_items.length; i++){
     var item_clicks = market_items[i].clicks;
     survey_likes.push(item_clicks);
   }
-
   var ctx = document.getElementById('chart').getContext('2d');
   var data_chart = new Chart(ctx, {
     type: 'bar',
-
-    // The data for our dataset
     data: {
       labels: selects_array,
       datasets: [{
@@ -206,8 +191,6 @@ function make_chart(){
         data: survey_likes
       }]
     },
-
-    // Configuration options go here
     options: {
       scales: {
         yAxes: [{
@@ -220,12 +203,24 @@ function make_chart(){
   });
 }
 
-new_item1 = Math.floor(Math.random() * market_items.length);
-clicked_list.push(new_item1);
-new_item2 = Math.floor(Math.random() * market_items.length);
-clicked_list.push(new_item2);
-new_item3 = Math.floor(Math.random() * market_items.length);
-clicked_list.push(new_item3);
+// ===================================
+// Initialize page & run code
+// ===================================
+
+var likes_in_ls = localStorage.getItem('like_counter_in_ls');
+var market_items_in_ls = localStorage.getItem(market_items_array_in_ls);
+var market_items = JSON.parse(market_items_in_ls);
+if (likes_in_ls === 0) { 
+  new_item1 = Math.floor(Math.random() * market_items.length);
+  clicked_list.push(new_item1);
+  new_item2 = Math.floor(Math.random() * market_items.length);
+  clicked_list.push(new_item2);
+  new_item3 = Math.floor(Math.random() * market_items.length);
+  clicked_list.push(new_item3);
+} else {
+  like_counter = likes_in_ls;
+  // add get clicklist from ls here
+}
 more_items();
 item1_div.addEventListener('click', handle_click_on_item1);
 item2_div.addEventListener('click', handle_click_on_item2);
